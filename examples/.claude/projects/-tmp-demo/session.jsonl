@@ -1,0 +1,4 @@
+{"type":"user","message":{"role":"user","content":[{"type":"text","text":"OPENAI_API_KEY=sk-FAKE-EXAMPLE-OPENAI"}]}}
+{"type":"assistant","message":{"role":"assistant","content":[{"type":"text","text":"Use ghp_FAKE_EXAMPLE_TOKEN and gho_FAKE_EXAMPLE_TOKEN and github_pat_FAKE_EXAMPLE_TOKEN"}]}}
+{"type":"user","message":{"role":"user","content":[{"type":"text","text":"git clone https://demo:FakeExamplePass99@example.test/a"}]}}
+not json {{{

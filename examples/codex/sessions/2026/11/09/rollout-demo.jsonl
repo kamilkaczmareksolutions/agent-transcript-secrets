@@ -1,0 +1,2 @@
+{"type":"session_meta","payload":{"id":"demo","cwd":"/tmp/demo"}}
+{"type":"response_item","payload":{"type":"message","role":"user","content":[{"type":"input_text","text":"STRIPE_KEY=sk_live_FAKEEXAMPLE slack xoxb-FAKE-EXAMPLE-TOKEN google AIzaFAKEEXAMPLE xai xai-FAKEEXAMPLEKEY"}]}}

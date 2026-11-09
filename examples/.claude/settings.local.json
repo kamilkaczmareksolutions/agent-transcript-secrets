@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -H \"Authorization: Bearer FAKEEXAMPLETOKEN\" https://example.test)",
+      "Bash(export ANTHROPIC_API_KEY=sk-ant-FAKEEXAMPLEKEY)",
+      "Bash(export AWS_ACCESS_KEY_ID=AKIAfakeEXAMPLEKEY12)"
+    ]
+  }
+}

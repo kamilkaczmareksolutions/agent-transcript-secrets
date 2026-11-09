@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(export OPENAI_API_KEY=sk-xxx)",
+      "Bash(export ANTHROPIC_API_KEY=sk-ant-xxx)",
+      "Bash(export API_KEY=your-api-key)",
+      "Bash(echo <TOKEN>)",
+      "Bash(export password=changeme)"
+    ]
+  }
+}
