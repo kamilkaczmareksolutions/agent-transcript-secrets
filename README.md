@@ -70,11 +70,11 @@ repos:
 
 ## Supported formats
 
-Claude Code transcripts are JSONL files under `~/.claude/projects/`, including `subagents` directories. The tool also reads `~/.claude/settings*.json` and `./.claude/settings*.json`.
+Claude Code transcripts are JSONL files under `$CLAUDE_CONFIG_DIR/projects/`, including `subagents` directories. `$CLAUDE_CONFIG_DIR` defaults to `~/.claude`. The tool also reads `settings*.json` in that directory and `./.claude/settings*.json`. The documented project file is `.claude/settings.local.json`. `~/.claude.json` is not read.
 
-Codex CLI transcripts are `rollout-*.jsonl` files under `$CODEX_HOME/sessions/YYYY/MM/DD/` and `$CODEX_HOME/archived_sessions/`. `$CODEX_HOME` defaults to `~/.codex`.
+Codex CLI transcripts are `rollout-*.jsonl` files under `$CODEX_HOME/sessions/YYYY/MM/DD/`, directly under `$CODEX_HOME/sessions/`, and under `$CODEX_HOME/archived_sessions/`. `$CODEX_HOME` defaults to `~/.codex`.
 
-Cursor agent transcripts are experimental. The tool reads JSONL files under `$CURSOR_CONFIG_DIR/projects/` when the path contains `agent-transcripts`. `$CURSOR_CONFIG_DIR` defaults to `~/.cursor`. Cursor changes this layout. `state.vscdb` is not read.
+Cursor agent transcripts are experimental. The tool reads JSONL files under `$CURSOR_CONFIG_DIR/projects/` when the path contains `agent-transcripts`, including a session folder and `subagents`. `$CURSOR_CONFIG_DIR` defaults to `~/.cursor`. Cursor changes this layout. `state.vscdb` and `~/.cursor/chats` are not read.
 
 A path you pass is scanned for `.jsonl`, `.json`, `.txt`, `.log`, `.md`, `.yaml`, and `.yml` files. `.bak` files are skipped unless you name the backup itself.
 

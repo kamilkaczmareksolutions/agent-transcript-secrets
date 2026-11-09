@@ -7,8 +7,24 @@ from pathlib import Path
 TEXT_SUFFIXES = {".json", ".jsonl", ".log", ".md", ".txt", ".yaml", ".yml"}
 SKIP_DIRS = {".git", ".pytest_cache", ".venv", "__pycache__", "node_modules", "venv"}
 
-_CODEX_LIVE = re.compile(r"sessions/\d{4}/\d{2}/\d{2}/rollout-[^/]+\.jsonl$")
+_CODEX_LIVE = re.compile(r"sessions/(?:\d{4}/\d{2}/\d{2}/)?rollout-[^/]+\.jsonl$")
 _CODEX_ARCH = re.compile(r"archived_sessions/rollout-[^/]+\.jsonl$")
+
+
+def _claude_dir() -> Path:
+    return Path(os.environ.get("CLAUDE_CONFIG_DIR", str(Path.home() / ".claude")))
+
+
+def _classify_claude_root(path: Path, name: str) -> tuple[str, bool] | None:
+    try:
+        relative = path.resolve().relative_to(_claude_dir().resolve())
+    except (OSError, ValueError):
+        return None
+    if name.endswith(".jsonl") and "projects" in relative.parts:
+        return "claude", False
+    if name.startswith("settings") and name.endswith(".json") and len(relative.parts) == 1:
+        return "claude-settings", False
+    return None
 
 
 def classify(path: Path) -> tuple[str, bool]:
@@ -23,6 +39,9 @@ def classify(path: Path) -> tuple[str, bool]:
         return "claude-settings", False
     if _CODEX_LIVE.search(text) or _CODEX_ARCH.search(text):
         return "codex", False
+    rooted = _classify_claude_root(path, name)
+    if rooted is not None:
+        return rooted
     return "file", False
 
 
@@ -43,7 +62,7 @@ def _dedupe(paths: list[Path]) -> list[Path]:
 
 def default_files() -> list[Path]:
     home = Path.home()
-    claude = home / ".claude"
+    claude = _claude_dir()
     codex = Path(os.environ.get("CODEX_HOME", str(home / ".codex")))
     cursor = Path(os.environ.get("CURSOR_CONFIG_DIR", str(home / ".cursor")))
     found: list[Path] = []

@@ -146,6 +146,9 @@ def test_default_locations_skip_unrelated_files(isolated: Path, tmp_path: Path, 
     codex = home / ".codex" / "sessions" / "2026" / "11" / "09"
     codex.mkdir(parents=True)
     (codex / "rollout-demo.jsonl").write_text("sk_live_FAKEEXAMPLE\n", encoding="utf-8")
+    (home / ".codex" / "sessions" / "rollout-flat.jsonl").write_text(
+        "xai-FAKEEXAMPLEKEY\n", encoding="utf-8"
+    )
     (home / ".codex" / "sessions" / "notes.jsonl").write_text("ghp_DECOY_EXAMPLE_TOKEN\n", encoding="utf-8")
     cursor = home / ".cursor" / "projects" / "p" / "agent-transcripts" / "s"
     cursor.mkdir(parents=True)
@@ -162,10 +165,39 @@ def test_default_locations_skip_unrelated_files(isolated: Path, tmp_path: Path, 
     assert "DECOY" not in stdout
     assert_hidden(stdout, stderr)
     report = json.loads(stdout)
-    assert report["count"] == 6
+    assert report["count"] == 7
     sources = Counter(item["source"] for item in report["findings"])
     assert sources["cursor"] == 1
     assert all(item["experimental"] for item in report["findings"] if item["source"] == "cursor")
+    assert sources["codex"] == 2
+
+
+def test_claude_config_dir_replaces_home_claude(
+    isolated: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    home = isolated
+    config = tmp_path / "claude-config"
+    (config / "projects" / "app").mkdir(parents=True)
+    (config / "projects" / "app" / "session.jsonl").write_text(
+        "sk-ant-FAKEEXAMPLEKEY\n", encoding="utf-8"
+    )
+    (config / "settings.json").write_text(
+        "Authorization: Bearer FAKEEXAMPLETOKEN\n", encoding="utf-8"
+    )
+    ignored = home / ".claude" / "projects" / "ignored"
+    ignored.mkdir(parents=True)
+    (ignored / "skip.jsonl").write_text("sk-ant-DECOYSHOULDNOTSHOW\n", encoding="utf-8")
+    empty = tmp_path / "empty"
+    empty.mkdir()
+    monkeypatch.setenv("CLAUDE_CONFIG_DIR", str(config))
+    monkeypatch.chdir(empty)
+    code, stdout, stderr = invoke(["scan", "--json"])
+    assert code == 1
+    assert "DECOY" not in stdout
+    assert_hidden(stdout, stderr)
+    report = json.loads(stdout)
+    assert report["count"] == 2
+    assert {item["source"] for item in report["findings"]} == {"claude", "claude-settings"}
 
 
 def test_redact_dry_run_writes_nothing(monkeypatch: pytest.MonkeyPatch) -> None:
