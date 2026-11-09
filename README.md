@@ -14,6 +14,16 @@ The tool reads paths you pass, or the default directories on your computer. It w
 
 ## Install
 
+From PyPI, once the first release is published:
+
+```bash
+pipx install agent-secrets
+```
+
+The distribution name and the command are both `agent-secrets`. That is a different package from [`agentsecrets`](https://pypi.org/project/agentsecrets/) on PyPI, which is an SDK for a hosted secrets proxy.
+
+Until that release exists, install from GitHub:
+
 ```bash
 pipx install "git+https://github.com/kamilkaczmareksolutions/agent-transcript-secrets.git"
 ```
@@ -21,10 +31,8 @@ pipx install "git+https://github.com/kamilkaczmareksolutions/agent-transcript-se
 From a clone:
 
 ```bash
-pip install .
+pipx install .
 ```
-
-The command is `agent-secrets`.
 
 ## Usage
 
@@ -61,7 +69,7 @@ Exit status is 1 when findings exist, 0 when the tree is clean, and 2 for a miss
 ```yaml
 repos:
   - repo: https://github.com/kamilkaczmareksolutions/agent-transcript-secrets
-    rev: main
+    rev: v0.1.0  # pin a tag; until the first tag exists, pin a commit SHA
     hooks:
       - id: agent-secrets
 ```
