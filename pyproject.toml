@@ -1,5 +1,5 @@
 [project]
-name = "agent-secrets"
+name = "agent-transcript-secrets"
 version = "0.1.0"
 description = "Find and redact secrets in local AI agent transcripts and settings"
 readme = "README.md"

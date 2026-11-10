@@ -17,10 +17,10 @@ The tool reads paths you pass, or the default directories on your computer. It w
 From PyPI, once the first release is published:
 
 ```bash
-pipx install agent-secrets
+pipx install agent-transcript-secrets
 ```
 
-The distribution name and the command are both `agent-secrets`. That is a different package from [`agentsecrets`](https://pypi.org/project/agentsecrets/) on PyPI, which is an SDK for a hosted secrets proxy.
+The PyPI distribution is `agent-transcript-secrets` and the command it installs is `agent-secrets`. It is unrelated to [`agentsecrets`](https://pypi.org/project/agentsecrets/) on PyPI, which is an SDK for a hosted secrets proxy.
 
 Until that release exists, install from GitHub:
 
